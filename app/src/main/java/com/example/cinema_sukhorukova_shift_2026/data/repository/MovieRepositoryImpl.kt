@@ -5,7 +5,7 @@ import com.example.cinema_sukhorukova_shift_2026.data.models.mapper.MovieMapper
 import com.example.cinema_sukhorukova_shift_2026.domain.entity.Movie
 import com.example.cinema_sukhorukova_shift_2026.domain.repository.MovieRepository
 
-class MovieRepository1(private val api: CinemaApi) : MovieRepository {
+class MovieRepositoryImpl(private val api: CinemaApi) : MovieRepository {
 
     override suspend fun getTodayMovies(): List<Movie> {
         val response = api.getTodayFilms()
