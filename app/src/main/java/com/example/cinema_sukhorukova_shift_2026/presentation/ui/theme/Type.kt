@@ -1,4 +1,4 @@
-package com.example.cinema_sukhorukova_shift_2026.ui.theme
+package com.example.cinema_sukhorukova_shift_2026.presentation.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
