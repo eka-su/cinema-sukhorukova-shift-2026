@@ -5,8 +5,6 @@ import com.example.cinema_sukhorukova_shift_2026.domain.repository.ScheduleRepos
 
 
 // Получение расписания фильма
-class GetMovieScheduleUseCase(private val repository: ScheduleRepository) {
-    suspend operator fun invoke(movieId: String): List<Schedule> {
-        return repository.getSchedule(movieId)
-    }
-}
+class GetMovieScheduleUseCase(
+    repository: ScheduleRepository
+) : suspend (String) -> List<Schedule> by repository::getSchedule
