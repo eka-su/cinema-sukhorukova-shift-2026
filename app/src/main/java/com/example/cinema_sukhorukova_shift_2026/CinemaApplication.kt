@@ -2,6 +2,7 @@ package com.example.cinema_sukhorukova_shift_2026
 
 
 import android.app.Application
+import com.example.cinema_sukhorukova_shift_2026.di.NavigationModule
 import com.example.cinema_sukhorukova_shift_2026.di.NetworkModule
 import com.example.cinema_sukhorukova_shift_2026.di.RepositoryModule
 import com.example.cinema_sukhorukova_shift_2026.di.ViewModelModule
@@ -20,6 +21,7 @@ class CinemaApplication : Application() {
                     NetworkModule,
                     RepositoryModule,
                     ViewModelModule,
+                    NavigationModule,
                 )
             )
         }
