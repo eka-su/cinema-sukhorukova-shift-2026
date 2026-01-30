@@ -14,6 +14,8 @@ import com.example.cinema_sukhorukova_shift_2026.presentation.navigation.Navigat
 import com.example.cinema_sukhorukova_shift_2026.presentation.ui.components.BottomBar
 import org.koin.compose.getKoin
 import androidx.compose.runtime.getValue
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 
 @Composable
 fun MainScreen() {
@@ -32,15 +34,7 @@ fun MainScreen() {
         bottomBar = {
             BottomBar(
                 currentRoute = currentRoute,
-                onNavItemClick = { option ->
-                    navController.navigate(option.route) {
-                        popUpTo(navController.graph.startDestinationId) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                }
+                navController = navController
             )
         }
     ) { padding ->
@@ -59,6 +53,14 @@ fun MainScreen() {
 
             composable(NavigationOption.Profile.route) {
                 ProfileScreen()
+            }
+
+            composable(
+                route = NavigationOption.Film.route,
+                arguments = listOf(navArgument("filmId") { type = NavType.StringType })
+            ) { backStackEntry ->
+                val filmId = backStackEntry.arguments?.getString("filmId") ?: return@composable
+                FilmScreen(filmId = filmId)
             }
         }
     }
