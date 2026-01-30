@@ -14,6 +14,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.cinema_sukhorukova_shift_2026.R
 import com.example.cinema_sukhorukova_shift_2026.presentation.navigation.NavigationOption
 
@@ -21,7 +23,7 @@ import com.example.cinema_sukhorukova_shift_2026.presentation.navigation.Navigat
 @Composable
 fun BottomBar(
     currentRoute: String?,
-    onNavItemClick: (NavigationOption) -> Unit
+    navController: NavHostController
 ) {
     val items = listOf(
         NavigationOption.Afisha,
@@ -61,7 +63,26 @@ fun BottomBar(
                         )
                     },
                     selected = currentRoute == item.route,
-                    onClick = { onNavItemClick(item) },
+                    onClick = {
+                        if (currentRoute != item.route) {
+                            // Если нажали на Афишу, возвращаемся на существующий экран
+                            if (item == NavigationOption.Afisha) {
+                                navController.popBackStack(
+                                    route = NavigationOption.Afisha.route,
+                                    inclusive = false
+                                )
+                            } else {
+                                // Для остальных экранов обычная навигация
+                                navController.navigate(item.route) {
+                                    popUpTo(navController.graph.startDestinationId) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
+                                }
+                            }
+                        }
+                    },
                     colors = NavigationBarItemDefaults.colors(
                         selectedIconColor = MaterialTheme.colorScheme.primary,
                         selectedTextColor = MaterialTheme.colorScheme.primary,
@@ -76,16 +97,17 @@ fun BottomBar(
 }
 
 
-@Preview(showBackground = true, name = "Profile selected")
+@Preview(showBackground = true, name = "Tickets selected")
 @Composable
-fun BottomBarPreviewProfile() {
+fun BottomBarPreviewTickets() {
     MaterialTheme {
+        val navController = rememberNavController()
         BottomBar(
-          //  currentRoute = NavigationOption.Profile.route,
-            //currentRoute = NavigationOption.Afisha.route,
             currentRoute = NavigationOption.Tickets.route,
-           //  currentRoute = null,
-            onNavItemClick = {}
+            // currentRoute = null,
+            // currentRoute = NavigationOption.Profile.route,
+            //currentRoute = NavigationOption.Afisha.route,
+            navController = navController
         )
     }
 }
