@@ -4,8 +4,6 @@ import com.example.cinema_sukhorukova_shift_2026.domain.entity.Movie
 import com.example.cinema_sukhorukova_shift_2026.domain.repository.MovieRepository
 
 // Получение фильма по id
-class GetMovieByIdUseCase(private val repository: MovieRepository) {
-    suspend operator fun invoke(id: String): Movie {
-        return repository.getMovie(id)
-    }
-}
+class GetTodayMoviesUseCase(
+    repository: MovieRepository
+) : suspend () -> List<Movie> by repository::getTodayMovies

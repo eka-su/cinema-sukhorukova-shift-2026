@@ -2,9 +2,10 @@ package com.example.cinema_sukhorukova_shift_2026
 
 
 import android.app.Application
-import com.example.cinema_sukhorukova_shift_2026.di.networkModule
-import com.example.cinema_sukhorukova_shift_2026.di.repositoryModule
-import com.example.cinema_sukhorukova_shift_2026.di.viewModelModule
+import com.example.cinema_sukhorukova_shift_2026.di.NavigationModule
+import com.example.cinema_sukhorukova_shift_2026.di.NetworkModule
+import com.example.cinema_sukhorukova_shift_2026.di.RepositoryModule
+import com.example.cinema_sukhorukova_shift_2026.di.ViewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -17,9 +18,10 @@ class CinemaApplication : Application() {
             androidContext(this@CinemaApplication)
             modules(
                 listOf(
-                    networkModule,
-                    repositoryModule,
-                    viewModelModule,
+                    NetworkModule,
+                    RepositoryModule,
+                    ViewModelModule,
+                    NavigationModule,
                 )
             )
         }

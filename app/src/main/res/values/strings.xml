@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">cinema-sukhorukova-shift-2026</string>
+    <string name="afisha_title">Афиша</string>
+    <string name="details_button">Подробнее</string>
+    <string name="loading_error">Ошибка загрузки</string>
+    <string name="kinopoisk_label">Kinopoisk - %1$s</string>
+    <string name="film_about_title">О фильме</string>
 </resources>

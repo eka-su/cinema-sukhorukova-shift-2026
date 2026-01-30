@@ -17,71 +17,53 @@ import com.example.cinema_sukhorukova_shift_2026.domain.entity.Ratings
 import com.example.cinema_sukhorukova_shift_2026.domain.entity.Schedule
 import com.example.cinema_sukhorukova_shift_2026.domain.entity.Seance
 
+fun FilmDto.toMovie(): Movie = Movie(
+    id = id,
+    name = name,
+    originalName = originalName,
+    description = description,
+    releaseDate = releaseDate,
+    actors = actors.map { it.toPerson() },
+    directors = directors.map { it.toPerson() },
+    runtime = runtime,
+    ageRating = ageRating,
+    genres = genres,
+    ratings = userRatings.toRatings(),
+    img = img,
+    country = country.toCountry()
+)
 
-object MovieMapper {
+fun PersonDto.toPerson(): Person = Person(
+    id = id,
+    professions = professions.joinToString(", "),
+    fullName = fullName
+)
 
-    fun mapFilmDtoToMovie(filmDto: FilmDto): Movie {
-        return Movie(
-            id = filmDto.id,
-            name = filmDto.name,
-            originalName = filmDto.originalName,
-            description = filmDto.description,
-            releaseDate = filmDto.releaseDate,
-            actors = filmDto.actors.map { mapPersonDtoToPerson(it) },
-            directors = filmDto.directors.map { mapPersonDtoToPerson(it) },
-            runtime = filmDto.runtime,
-            ageRating = filmDto.ageRating,
-            genres = filmDto.genres,
-            ratings = mapRatingsDtoToRatings(filmDto.userRatings),
-            img = filmDto.img,
-            country = mapCountryDtoToCountry(filmDto.country)
-        )
+fun RatingsDto.toRatings(): Ratings = Ratings(
+    kinopoisk = kinopoisk,
+    imdb = imdb
+)
+
+fun CountryDto.toCountry(): Country = Country(
+    id = id,
+    name = name,
+    code = code,
+    code2 = code2
+)
+
+fun ScheduleDto.toSchedule(): Schedule = Schedule(
+    date = date,
+    seances = seances.map { it.toSeance() }
+)
+
+fun SeanceDto.toSeance(): Seance = Seance(
+    time = time,
+    hall = hall.toHall()
+)
+
+fun HallDto.toHall(): Hall = Hall(
+    name = name,
+    places = places.map { row ->
+        row.map { Place(type = it.type, price = it.price) }
     }
-
-    private fun mapPersonDtoToPerson(personDto: PersonDto): Person {
-        return Person(
-            id = personDto.id,
-            professions = personDto.professions.joinToString(", "),
-            fullName = personDto.fullName
-        )
-    }
-
-    private fun mapRatingsDtoToRatings(ratingsDto: RatingsDto): Ratings {
-        return Ratings(
-            kinopoisk = ratingsDto.kinopoisk,
-            imdb = ratingsDto.imdb
-        )
-    }
-
-    private fun mapCountryDtoToCountry(countryDto: CountryDto): Country {
-        return Country(
-            id = countryDto.id,
-            name = countryDto.name,
-            code = countryDto.code,
-            code2 = countryDto.code2
-        )
-    }
-
-    fun mapScheduleDtoToSchedule(scheduleDto: ScheduleDto): Schedule {
-        return Schedule(
-            date = scheduleDto.date,
-            seances = scheduleDto.seances.map { mapSeanceDtoToSeance(it) }
-        )
-    }
-
-    private fun mapSeanceDtoToSeance(seanceDto: SeanceDto): Seance {
-        return Seance(
-            time = seanceDto.time,
-            hall = mapHallDtoToHall(seanceDto.hall)
-        )
-    }
-
-    private fun mapHallDtoToHall(hallDto: HallDto): Hall {
-        return Hall(
-            name = hallDto.name,
-            places = hallDto.places.map { row ->
-                row.map { placeDto -> Place(type = placeDto.type, price = placeDto.price) }
-            }
-        )
-    }
-}
+)

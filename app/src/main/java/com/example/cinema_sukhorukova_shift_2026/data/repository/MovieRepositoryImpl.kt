@@ -1,23 +1,28 @@
 package com.example.cinema_sukhorukova_shift_2026.data.repository
 
+import android.util.Log
 import com.example.cinema_sukhorukova_shift_2026.data.api.CinemaApi
-import com.example.cinema_sukhorukova_shift_2026.data.models.mapper.MovieMapper
+import com.example.cinema_sukhorukova_shift_2026.data.models.mapper.toMovie
 import com.example.cinema_sukhorukova_shift_2026.domain.entity.Movie
 import com.example.cinema_sukhorukova_shift_2026.domain.repository.MovieRepository
+import com.google.gson.Gson
 
-class MovieRepository1(private val api: CinemaApi) : MovieRepository {
+class MovieRepositoryImpl(private val api: CinemaApi) : MovieRepository {
 
     override suspend fun getTodayMovies(): List<Movie> {
         val response = api.getTodayFilms()
         return if (response.success) {
-            response.films.map { MovieMapper.mapFilmDtoToMovie(it) }
+            response.films.map { it.toMovie() }
         } else {
             emptyList()
         }
     }
 
     override suspend fun getMovie(id: String): Movie {
-        val filmDto = api.getFilm(id)
-        return MovieMapper.mapFilmDtoToMovie(filmDto)
+        val response = api.getFilm(id) // FilmsDetailDto
+        if (!response.success) {
+            throw Exception("Ошибка при получении фильма")
+        }
+        return response.film.toMovie() // FilmDto -> Movie
     }
 }
